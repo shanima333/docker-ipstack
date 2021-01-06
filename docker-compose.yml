@@ -1,0 +1,56 @@
+version: "3"
+
+services:
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    networks:
+      - flask-net
+
+
+  flaskapp1:
+    image: fujikomalan/ipstack
+    container_name: flaskapp1
+    restart: always
+    networks:
+      - flask-net
+    environment:
+      - CACHING_SERVER=redis
+      - IPSTACK_KEY=700bdf97843781e1e6a5b977d34bea8d  
+
+  flaskapp2:
+    image: fujikomalan/ipstack
+    container_name: flaskapp3
+    restart: always
+    networks:
+      - flask-net
+    environment:
+      - CACHING_SERVER=redis
+      - IPSTACK_KEY=700bdf97843781e1e6a5b977d34bea8d 
+
+  flaskapp2:
+    image: fujikomalan/ipstack
+    container_name: flaskapp3
+    restart: always
+    networks:
+      - flask-net
+    environment:
+      - CACHING_SERVER=redis
+      - IPSTACK_KEY=700bdf97843781e1e6a5b977d34bea8d 
+
+  nginx:
+    image: nginx:1.18.0-alpine
+    container_name: nginx
+    restart: always
+    ports:
+     - 80:80
+    networks:
+      - flask-net
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf  
+        
+             
+networks:
+  flask-net:
